@@ -19,7 +19,7 @@ It automates critical user flows such as login and hairdresser review submission
 - tests/features – Gherkin feature files
 - tests/steps – Step definitions
 - tests/pages – Page Object Model
-- test/fixture - Test Data
+- tests/fixtures - Test Data
 - tests/support – Hooks, world, config
 - reports – Logs and test outputs
 
