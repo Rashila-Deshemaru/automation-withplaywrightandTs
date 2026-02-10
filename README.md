@@ -19,10 +19,22 @@ It automates critical user flows such as login and hairdresser review submission
 - tests/features – Gherkin feature files
 - tests/steps – Step definitions
 - tests/pages – Page Object Model
+- test/fixture - Test Data
 - tests/support – Hooks, world, config
 - reports – Logs and test outputs
 
-## How to Run Tests
-```bash
+
+## Setup
+
+### 1. Clone the repository
+git clone <repo-url>
+
+### 2. Install dependencies
 npm install
+
+### 3. Configure environment variables
+cp .env.example .env
+# update values inside .env
+
+### 4. Run tests
 npx cucumber-js
