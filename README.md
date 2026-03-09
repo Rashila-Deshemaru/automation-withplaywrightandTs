@@ -1,12 +1,13 @@
 # Playwright + Cucumber Automation Framework
 
 ## Overview
-This project is an end-to-end test automation framework built using:
+This project is an end-to-end test automation framework with Page Object Model built using:
 - Playwright
 - Cucumber (BDD)
 - TypeScript
 
 It automates critical user flows such as login and hairdresser review submission.
+It also performs API validation using GraphQL with UI for filter feature in haidresserpage
 
 ## Tech Stack
 - Playwright
@@ -14,6 +15,7 @@ It automates critical user flows such as login and hairdresser review submission
 - TypeScript
 - Node.js
 - log4js
+- GraphQL API validation
 
 ## Project Structure
 - tests/features – Gherkin feature files
@@ -21,6 +23,7 @@ It automates critical user flows such as login and hairdresser review submission
 - tests/pages – Page Object Model
 - tests/fixtures - Test Data
 - tests/support – Hooks, world, config
+- tests/support/api – GraphQL helperfor API validation
 - reports – Logs and test outputs
 
 
