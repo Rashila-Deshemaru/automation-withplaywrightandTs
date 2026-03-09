@@ -8,6 +8,10 @@ export class HairdresserPage {
     private successMessage:Locator
     private customerName:Locator
     private cancelButton: Locator;
+    private filterIcon: Locator;
+    private applyFilterButton: Locator;
+    private tableRows: Locator;
+    private clearFilterButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -16,7 +20,10 @@ export class HairdresserPage {
     this.submitButton = page.getByRole('button', { name: "Save Rating" });
     this.successMessage = page.locator(".MuiAlert-message.css-1xsto0d");
     this.cancelButton = page.getByRole("button", { name: "Cancel" });
-
+    this.filterIcon = page.locator('.MuiInputAdornment-root.MuiInputAdornment-positionEnd > svg');
+    this.applyFilterButton = page.getByRole('button', { name: 'Apply filter' });
+    this.tableRows = page.locator("table tbody tr");
+    this.clearFilterButton = page.getByRole('button', { name: 'Clear filter' });
   }
 
   private get commentTextarea(): Locator {
@@ -117,4 +124,74 @@ export class HairdresserPage {
     ).toBe(expectedCount);
   }
 
+  async clickFilterIcon() {
+    await this.filterIcon.click();
+  }
+
+  async clickClearFilter() {
+    await this.clearFilterButton.click();
+  }
+
+  private statusRadio(status: string) {
+    return this.page.locator('label', { hasText: status });
+  }
+
+  async selectStatusRadioButton(status: 'Active' | 'Disabled') {
+    const radioLabel = this.statusRadio(status);
+
+    await expect(radioLabel).toBeVisible({ timeout: 10000 });
+
+    await radioLabel.click();
+  }
+
+  async clickApplyFilter() {
+    await this.applyFilterButton.click();
+  }
+
+  async sortByColumn(columnName: string) {
+    await this.page.getByRole("columnheader", { name: columnName }).click();
+  }
+
+  async waitForTableToLoad() {
+    await this.page.waitForSelector("table tbody tr", { state: "visible" });
+  }
+
+  async getRowCount(): Promise<number> {
+    return await this.tableRows.count();
+  }
+
+  async getRowByIndex(index: number): Promise<Locator> {
+    return this.tableRows.nth(index);
+  }
+
+  async getCellValue(rowIndex: number, columnIndex: number): Promise<string | null> {
+    return await this.tableRows
+      .nth(rowIndex)
+      .locator("td")
+      .nth(columnIndex)
+      .textContent();
+  }
+
+  async getRowData(rowIndex: number) {
+    const row = this.tableRows.nth(rowIndex);
+    const cells = row.locator("td");
+
+    return {
+      firstName: (await cells.nth(0).textContent())?.trim(),
+      lastName: (await cells.nth(1).textContent())?.trim(),
+      email: (await cells.nth(2).textContent())?.trim(),
+      contactNumber: (await cells.nth(3).textContent())?.trim(),
+      status: (await cells.nth(4).textContent())?.trim(),
+    };
+  }
+
+  async verifyAllRowsHaveStatus(expectedStatus: string) {
+    const count = await this.getRowCount();
+
+    for (let i = 0; i < count; i++) {
+      const rowData = await this.getRowData(i);
+      expect(rowData.status?.toLowerCase()).toContain(expectedStatus.toLowerCase());
+    }
+  }
+  
 }

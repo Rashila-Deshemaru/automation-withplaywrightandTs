@@ -1,5 +1,5 @@
-@hairdresser
-Feature: Hairdresser reviews
+@hairdresser-review
+Feature: Hairdresser review
 
   Scenario: User submits a rating and review successfully
     Given the user is logged in
@@ -18,3 +18,5 @@ Feature: Hairdresser reviews
     And cancels the review
     Then the review should not be submitted
     And the review count should not change at row 2
+
+
